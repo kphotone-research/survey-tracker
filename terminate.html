@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You for Your Time</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+    }
+    .card {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .logo img {
+      height: 60px;
+      margin-bottom: 20px;
+    }
+    .title {
+      font-size: 22px;
+      color: #004080;
+      margin-bottom: 10px;
+    }
+    .message {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">
+      <img src="https://kphotone.com/logo.png" alt="Kphotone Logo" />
+    </div>
+    <div class="title">Thank You for Your Time</div>
+    <div class="message">Unfortunately, you did not qualify for this survey. We appreciate your participation.</div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const project_id = params.get('project_id');
+    const survey_id = params.get('survey_id');
+
+    const SUPABASE_URL = 'https://YOUR_SUPABASE_URL.supabase.co';
+    const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js';
+    script.onload = async () => {
+      const { createClient } = supabase;
+      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      const { data, error } = await supabaseClient
+        .from('redirect_logs')
+        .insert([{
+          project_id: project_id,
+          survey_id: survey_id,
+          status: 'terminate'
+        }]);
+
+      if (error) {
+        console.error('Logging failed:', error.message);
+      } else {
+        console.log('Logged:', data);
+      }
+    };
+    document.head.appendChild(script);
+  </script>
+</body>
+</html>
