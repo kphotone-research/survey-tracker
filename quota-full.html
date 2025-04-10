@@ -1,140 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quota-Full - Survey Tracker</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-      text-align: center;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quota-Full - Survey Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
 
-    header {
-      background-color: #003366;
-      padding: 20px;
-      color: white;
-    }
+        header {
+            background-color: #003366;
+            padding: 20px;
+            color: white;
+        }
 
-    header img {
-      max-width: 150px;
-    }
+        header img {
+            max-width: 150px;
+        }
 
-    main {
-      padding: 50px;
-      background-color: white;
-      margin-top: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+        main {
+            padding: 50px;
+            background-color: white;
+            margin-top: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    h1 {
-      color: #003366;
-    }
+        h1 {
+            color: #003366;
+        }
 
-    footer {
-      background-color: #003366;
-      color: white;
-      padding: 10px;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
-
-    .error {
-      color: red;
-      font-weight: bold;
-    }
-
-    .hidden {
-      display: none;
-    }
-  </style>
+        footer {
+            background-color: #003366;
+            color: white;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <img src="https://kphotone.com/path/to/logo.png" alt="Kphotone Logo" />
-  </header>
-
-  <main>
-    <div id="content" class="hidden">
-      <h1>Quota Full – Survey Participation Closed</h1>
-      <p>Thank you for your interest in our survey! Unfortunately, we have already reached the maximum number of responses required for this study, and the survey is now closed.</p>
-      <p>We truly appreciate your willingness to participate and encourage you to check back for future opportunities. If you have any questions or need assistance, please don't hesitate to contact us at <a href="mailto:support@kphotone.com">support@kphotone.com</a>.</p>
-      <p>Thank you for your support, and we hope to engage with you again soon!</p>
-    </div>
-
-    <div id="error" class="error hidden">
-      <h1>Invalid Access</h1>
-      <p>This link appears to have been modified or accessed incorrectly.</p>
-    </div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Kphotone Research. All rights reserved.</p>
-  </footer>
-
+    <header>
+      
+    </header>
+    <main>
+        <h1>Quota Full – Survey Participation Closed</h1>
+        <p>Thank you for your interest in our survey! Unfortunately, we have already reached the maximum number of responses required for this study, and the survey is now closed</p>
+        <p>We truly appreciate your willingness to participate and encourage you to check back for future opportunities. If you have any questions or need assistance, please don't hesitate to contact us at <a href="mailto:support@kphotone.com">support@kphotone.com</a>.</p>
+       <p>Thank you for your support, and we hope to engage with you again soon!</p>
+    </main>
+    <footer>
+        <p>&copy; 2025 Kphotone Research. All rights reserved.</p>
+    </footer>
+</body>
+</html>
   <script>
     const params = new URLSearchParams(window.location.search);
     const project_id = params.get('project_id');
     const survey_id = params.get('survey_id');
-    const status = 'quota-full';
 
-    const isValid = project_id && /^[a-zA-Z0-9_-]+$/.test(project_id) &&
-                    survey_id && /^[a-zA-Z0-9_-]+$/.test(survey_id);
+    const SUPABASE_URL = 'https://hpxcfhohoyjxyhfdxqlr.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhweGNmaG9ob3lqeHloZmR4cWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMTU0ODcsImV4cCI6MjA1OTc5MTQ4N30.S4EBc-WSIainf4En42v2TBHs-azE5-AVBOFGamxOCz4';
 
-    const saved = JSON.parse(localStorage.getItem('kphotone_redirect'));
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js';
+    script.onload = async () => {
+      const { createClient } = supabase;
+      const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const showContent = () => document.getElementById('content').classList.remove('hidden');
-    const showError = () => document.getElementById('error').classList.remove('hidden');
+      const { data, error } = await supabaseClient
+        .from('redirect_logs')
+        .insert([{
+          project_id: project_id,
+          survey_id: survey_id,
+          status: 'quota-full'
+        }]);
 
-    if (!saved) {
-      if (isValid) {
-        localStorage.setItem('kphotone_redirect', JSON.stringify({ project_id, survey_id, status }));
-        showContent();
-        logToSupabase(); // Log only once
+      if (error) {
+        console.error('Logging failed:', error.message);
       } else {
-        showError();
+        console.log('Logged:', data);
       }
-    } else {
-      if (saved.project_id === project_id && saved.survey_id === survey_id && saved.status === status) {
-        showContent();
-      } else {
-        showError();
-      }
-    }
-
-    // Redirect after 10 seconds
-    setTimeout(() => {
-      window.location.href = 'https://kphotone.com';
-    }, 10000);
-
-    // Supabase logging script
-    function logToSupabase() {
-      const SUPABASE_URL = 'https://hpxcfhohoyjxyhfdxqlr.supabase.co';
-      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhweGNmaG9ob3lqeHloZmR4cWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMTU0ODcsImV4cCI6MjA1OTc5MTQ4N30.S4EBc-WSIainf4En42v2TBHs-azE5-AVBOFGamxOCz4';
-
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js';
-      script.onload = async () => {
-        const { createClient } = supabase;
-        const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        const { data, error } = await supabaseClient
-          .from('redirect_logs')
-          .insert([{ project_id, survey_id, status }]);
-
-        if (error) {
-          console.error('Logging failed:', error.message);
-        } else {
-          console.log('Logged:', data);
-        }
-      };
-      document.head.appendChild(script);
-    }
+    };
+    document.head.appendChild(script);
   </script>
 </body>
 </html>
