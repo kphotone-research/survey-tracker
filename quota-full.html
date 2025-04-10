@@ -1,65 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quota-Full - Survey Tracker</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4;
-            text-align: center;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quota-Full - Survey Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      text-align: center;
+    }
 
-        header {
-            background-color: #003366;
-            padding: 20px;
-            color: white;
-        }
+    header {
+      background-color: #003366;
+      padding: 20px;
+      color: white;
+    }
 
-        header img {
-            max-width: 150px;
-        }
+    header img {
+      max-width: 150px;
+    }
 
-        main {
-            padding: 50px;
-            background-color: white;
-            margin-top: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    main {
+      padding: 50px;
+      background-color: white;
+      margin-top: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-        h1 {
-            color: #003366;
-        }
+    h1 {
+      color: #003366;
+    }
 
-        footer {
-            background-color: #003366;
-            color: white;
-            padding: 10px;
-            position: fixed;
-            width: 100%;
-            bottom: 0;
-        }
-    </style>
+    footer {
+      background-color: #003366;
+      color: white;
+      padding: 10px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+  </style>
 </head>
 <body>
-    <header>
-      
-    </header>
-    <main>
-        <h1>Quota Full – Survey Participation Closed</h1>
-        <p>Thank you for your interest in our survey! Unfortunately, we have already reached the maximum number of responses required for this study, and the survey is now closed</p>
-        <p>We truly appreciate your willingness to participate and encourage you to check back for future opportunities. If you have any questions or need assistance, please don't hesitate to contact us at <a href="mailto:support@kphotone.com">support@kphotone.com</a>.</p>
-       <p>Thank you for your support, and we hope to engage with you again soon!</p>
-    </main>
-    <footer>
-        <p>&copy; 2025 Kphotone Research. All rights reserved.</p>
-    </footer>
-</body>
-</html>
+  <header></header>
+  <main>
+    <h1>Quota Full – Survey Participation Closed</h1>
+    <p>Thank you for your interest in our survey! Unfortunately, we have already reached the maximum number of responses required for this study, and the survey is now closed</p>
+    <p>We truly appreciate your willingness to participate and encourage you to check back for future opportunities. If you have any questions or need assistance, please don't hesitate to contact us at <a href="mailto:support@kphotone.com">support@kphotone.com</a>.</p>
+    <p>Thank you for your support, and we hope to engage with you again soon!</p>
+  </main>
+  <footer>
+    <p>&copy; 2025 Kphotone Research. All rights reserved.</p>
+  </footer>
+
   <script>
     const params = new URLSearchParams(window.location.search);
     const project_id = params.get('project_id');
@@ -89,6 +86,11 @@
       }
     };
     document.head.appendChild(script);
+
+    // Redirect to kphotone.com after 10 seconds
+    setTimeout(() => {
+      window.location.href = 'https://kphotone.com';
+    }, 10000);
   </script>
 </body>
 </html>
