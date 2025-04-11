@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Quota-Full - Survey Tracker</title>
+  <title>Qualified - Survey Tracker</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -17,10 +17,6 @@
       background-color: #003366;
       padding: 20px;
       color: white;
-    }
-
-    header img {
-      max-width: 150px;
     }
 
     main {
@@ -47,12 +43,13 @@
 </head>
 <body>
   <header></header>
+
   <main>
-    <h1>Quota Full – Survey Participation Closed</h1>
-    <p>Thank you for your interest in our survey! Unfortunately, we have already reached the maximum number of responses required for this study, and the survey is now closed.</p>
-    <p>We truly appreciate your willingness to participate and encourage you to check back for future opportunities. If you have any questions or need assistance, please don't hesitate to contact us at <a href="mailto:support@kphotone.com">support@kphotone.com</a>.</p>
-    <p>Thank you for your support, and we hope to engage with you again soon!</p>
+    <h1>Congratulations! You've Qualified for the Survey</h1>
+    <p>Thank you for your participation!</p>
+    <p>If you have any questions, please contact us at <a href="mailto:support@kphotone.com">support@kphotone.com</a>.</p>
   </main>
+
   <footer>
     <p>&copy; 2025 Kphotone Research. All rights reserved.</p>
   </footer>
@@ -61,6 +58,7 @@
     const params = new URLSearchParams(window.location.search);
     const project_id = params.get('project_id') || null;
     const survey_id = params.get('survey_id') || null;
+    const status = 'qualified';
 
     const SUPABASE_URL = 'https://hpxcfhohoyjxyhfdxqlr.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhweGNmaG9ob3lqeHloZmR4cWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQyMTU0ODcsImV4cCI6MjA1OTc5MTQ4N30.S4EBc-WSIainf4En42v2TBHs-azE5-AVBOFGamxOCz4';
@@ -74,11 +72,7 @@
       try {
         const { data, error } = await supabaseClient
           .from('redirect_logs')
-          .insert([{
-            project_id,
-            survey_id,
-            status: 'quota-full'
-          }]);
+          .insert([{ project_id, survey_id, status }]);
 
         if (error) {
           console.error('Logging failed:', error.message);
